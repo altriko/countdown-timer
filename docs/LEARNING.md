@@ -331,6 +331,27 @@ Used when passing a function inline as an argument (e.g. to `setInterval`) witho
 
 ---
 
+### 24. Separating test cases into a separate file
+
+To avoid bloating `timer.ts`, move test cases into `timer.test.ts`. This requires two steps:
+
+**Step 1** — `export` each function in `timer.ts`:
+```typescript
+export function toSeconds(...) { ... }
+export function fromSeconds(...) { ... }
+```
+
+**Step 2** — `import` them in `timer.test.ts`:
+```typescript
+import { toSeconds, fromSeconds } from "./timer.js"  // .js not .ts
+```
+
+Import uses `"./timer.js"` (not `.ts`) because the browser runs compiled JS, not the TypeScript source.
+
+To run tests, swap `index.html` to load `timer.test.js` instead of `timer.js`, then switch back when done.
+
+---
+
 ## Open Questions
 
 - Q: Why does `isValidDuration` combine two validations (00:00 check and seconds > 59) into one function instead of splitting them?
