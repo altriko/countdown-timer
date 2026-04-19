@@ -198,6 +198,139 @@ This happens when `timer.js` was compiled with an old/wrong `tsconfig.json` (e.g
 
 ---
 
+### 16. `int - 1` vs `int -= 1` — mutation vs expression
+
+```typescript
+int - 1       // ❌ calculates but throws away the result, int is unchanged
+int = int - 1 // ✅ saves the result back into int
+int -= 1      // ✅ shorthand for the above
+```
+
+In most languages, arithmetic expressions don't modify the variable — you must explicitly assign the result back.
+
+---
+
+### 17. `[object Object]` in console.log
+
+When you `console.log` an object directly, some contexts show `[object Object]` instead of the values. To see the actual content:
+
+```typescript
+console.log(JSON.stringify(tick({ minutes: 1, seconds: 30 })))
+// shows: {"minutes":1,"seconds":29}
+```
+
+`JSON.stringify` converts an object to a readable string.
+
+---
+
+### 18. All `if` branches must return a value
+
+TypeScript enforces that every possible path through a function returns the declared type. If you declare `boolean` but one path returns nothing, TypeScript errors:
+
+```typescript
+function isValidDuration(duration: TimerDuration): boolean {
+    if (...) { return false }
+    if (...) { return false }
+    else { return true }  // must explicitly return true — can't leave it empty
+}
+```
+
+Without the `else { return true }`, TypeScript says: _"Function lacks ending return statement"_.
+
+---
+
+### 19. `tick` doesn't know about time — `setInterval` does
+
+`tick` only does math (subtract 1 second). The timing (every 1000ms) is handled separately by `setInterval`:
+
+```typescript
+setInterval(() => {
+    tick(...)  // called automatically every 1 second
+}, 1000)
+```
+
+Two separate responsibilities — `tick` subtracts, `setInterval` controls when.
+
+---
+
+### 20. `.gitignore` patterns must start at column 1
+
+Leading spaces break `.gitignore` patterns — the file is whitespace-sensitive:
+
+```
+  timer.js   // ❌ leading spaces — pattern won't match
+timer.js     // ✅ starts at column 1
+```
+
+---
+
+### 21. Pushing to a remote GitHub repo
+
+```bash
+# One-time setup
+git init
+git add .
+git commit -m "initial commit"
+git remote add origin <your-repo-url>
+git push -u origin main
+```
+
+Or using GitHub CLI in one command:
+```bash
+gh repo create countdown-timer --public --source=. --push
+```
+
+---
+
+### 22. `do...while` vs `setInterval` — synchronous loop vs timed loop
+
+A `do...while` loop runs **instantly** with no delay — all iterations complete as fast as the CPU allows. It never waits.
+
+```typescript
+// ❌ runs all 90 iterations immediately — no real-time countdown
+do {
+    current_ = tick(current_)
+    console.log(current_)
+} while (toSeconds(current_) > 0)
+```
+
+`setInterval` schedules a callback to fire **every N milliseconds**, allowing real time to pass between ticks:
+
+```typescript
+// ✅ fires once per second — actual countdown
+const intervalId = setInterval(() => {
+    current_ = tick(current_)
+    console.log(current_)
+    if (toSeconds(current_) <= 0) {
+        clearInterval(intervalId)  // stop when done
+    }
+}, 1000)
+```
+
+| | `do...while` | `setInterval` |
+|---|---|---|
+| Speed | Instant (synchronous) | 1 tick per N ms (asynchronous) |
+| Use case | Process all items now | Do something repeatedly over real time |
+| Stopping | `while` condition | `clearInterval(id)` |
+
+**Rule:** If timing matters (countdowns, animations, polling), use `setInterval` — not a loop.
+
+---
+
+### 23. Arrow function syntax `() => {}`
+
+`()` is the parameters (empty here — no inputs needed), and `=>` means "this function does the following".
+
+```typescript
+() => { ... }         // no parameters
+(x) => { ... }        // one parameter
+(x, y) => { ... }    // two parameters
+```
+
+Used when passing a function inline as an argument (e.g. to `setInterval`) without needing to name it first.
+
+---
+
 ## Open Questions
 
 - Q: Why does `isValidDuration` combine two validations (00:00 check and seconds > 59) into one function instead of splitting them?

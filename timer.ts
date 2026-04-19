@@ -30,7 +30,7 @@ function toSeconds(duration: TimerDuration): number {
 // Convert total seconds -> Timer Duration (for display)
 function fromSeconds(totalSeconds: number): TimerDuration{
     var seconds_ = totalSeconds % 60
-    var minutes_ = Math.round(totalSeconds/60)
+    var minutes_ = Math.floor(totalSeconds/60)
     return {
         minutes: minutes_,
         seconds: seconds_
@@ -59,6 +59,47 @@ function tick(remaining: TimerDuration): TimerDuration {
     return fromSeconds(int)
 }
 
+// Render to the DOM based on the AppState
+// Responsible for: display value, button visibility, status message
+function render(state: AppState): string { // should change to :void on the output
+    const timeDisplay = formatDisplay(state.remaining)
+    const statusMessage = state.state
+
+    return("time: " + timeDisplay + " | status: " + statusMessage)
+}
+
+//Button Functions
+function handleStart(state: AppState): void {
+    // steps:
+    // - read current timer display
+    // - run the loop for the tick
+    // - return the current after the tick
+    let current_ = state.remaining
+
+    const intervalID = setInterval(() => {
+        current_ = tick(current_)
+        console.log(current_)
+
+        if (toSeconds(current_) <-0) {
+            clearInterval(intervalID)
+        }
+    } ,1000)
+}
+
+
+    // this is wrong as this is automatically runs, no waiting 1 seconds
+//     do {
+//         current_ = tick(current_)
+//         console.log(current_)
+//     } while (toSeconds(current_) > 0)
+// }
+
+
+
+
+// function handlePause(): void
+// function handleResume(): void
+// function handleReset(): void 
 
 
 // TEST CASEs
@@ -69,3 +110,16 @@ console.log("failed: 1:99 | " + isValidDuration({seconds: 99, minutes: 1})) // e
 console.log("failed: 00:00 | " + isValidDuration({seconds: 0, minutes:0}))
 console.log("success 1:30 | " + isValidDuration({minutes: 1, seconds: 30}))
 console.log(JSON.stringify(tick({minutes: 1, seconds: 30})))
+console.log(render({
+    state: "running",
+    initialDuration:  {"minutes": 10, "seconds": 12},
+    remaining: {"minutes": 15, "seconds": 20}, // remaining time
+    intervalId: null    // set interval, null if nothing created. number => timer is running, ID stored here, null => when it's not running (idle, paused, done), no interval
+}))
+console.log(handleStart(
+    {state: "running",
+    initialDuration:  {"minutes": 10, "seconds": 12},
+    remaining: {"minutes": 15, "seconds": 20}, // remaining time
+    intervalId: null    // set interval, null if nothing created. number => timer is running, ID stored here, null => when it's not running (idle, paused, done), no interval
+}))
+
