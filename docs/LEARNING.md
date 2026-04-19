@@ -495,6 +495,71 @@ state.remaining = state.initialDuration
 
 ---
 
+### 34. `NaN` — Not a Number
+
+`NaN` appears when you do math on something that isn't a valid number. Common cause: `parseInt` on an empty string.
+
+```typescript
+parseInt("5")  // → 5 ✅
+parseInt("")   // → NaN ❌ — input was empty
+```
+
+Fix with `|| 0` — "if the result is NaN, use 0 as default":
+```typescript
+const minutes = parseInt(minutesInput.value) || 0
+const seconds = parseInt(secondsInput.value) || 0
+```
+
+---
+
+### 35. Validate input before doing anything
+
+Always check validity right after reading inputs, before touching state. Use `return` to exit early if invalid:
+
+```typescript
+const minutes = parseInt(minutesInput.value) || 0
+const seconds = parseInt(secondsInput.value) || 0
+
+if (!isValidDuration({minutes, seconds})) return  // stop here if invalid
+
+state.initialDuration = {minutes, seconds}  // only runs if valid
+```
+
+**Rule:** read → validate → act. Never act on unvalidated input.
+
+---
+
+### 36. DOM variables must be declared before the functions that use them
+
+`const` variables are not hoisted — if a function references a DOM variable declared below it, the browser throws "cannot access before initialization" at runtime.
+
+Correct order in `timer.ts`:
+```
+1. Types & Interfaces
+2. DOM variables
+3. Functions
+4. Wiring (state + event listeners)
+```
+
+---
+
+### 37. `render` evolves from returning a string to updating the DOM
+
+During logic testing, `render` returned a string for `console.log`. In the real UI it writes directly to DOM elements instead:
+
+```typescript
+// Phase 1 — testing
+return("time: " + timeDisplay + " | status: " + statusMessage)
+
+// Phase 2 — real UI
+timerDisplay.textContent = timeDisplay
+statusMsg.textContent = statusMessage
+```
+
+The return type changes from `: string` to `: void`. The internal logic stays the same — only the output destination changes.
+
+---
+
 ## Open Questions
 
 - Q: Why does `isValidDuration` combine two validations (00:00 check and seconds > 59) into one function instead of splitting them?
