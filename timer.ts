@@ -54,7 +54,11 @@ export function fromSeconds(totalSeconds: number): TimerDuration{
 
 // Format the display into "MM:SS" str
 export function formatDisplay(duration: TimerDuration): string {
-    return String(duration.minutes + ":" + duration.seconds)
+    const mm = String(duration.minutes)
+    const ss = String(duration.seconds).padStart(2,"0") // to make 2 digits available, padStart => left
+    return mm + ":" + ss
+
+    
 }
 
 // Validate the user input
@@ -79,6 +83,40 @@ export function tick(remaining: TimerDuration): TimerDuration {
 export function render(state: AppState): void { // should change to :void on the output
     timerDisplay.textContent = formatDisplay(state.remaining)
     statusMsg.textContent = state.state
+
+    //Button visibility
+    const visibility = {
+        idle: {
+            start: true,
+            pause: false,
+            resume: false,
+            reset: false
+        },
+        running: {
+            start: false,
+            pause: true,
+            resume: true,
+            reset: true
+        },
+        paused: {
+            start: false,
+            pause: false,
+            resume: true,
+            reset: true
+        },
+        done: {
+            start: true,
+            pause: false,
+            resume: false,
+            reset: true
+        }
+    }
+
+    const v = visibility[state.state]
+    startBtn.style.display = v.start ? "inline": "none"
+    pauseBtn.style.display = v.pause ? "inline": "none"
+    resumeBtn.style.display = v.resume ? "inline": "none"
+    resetBtn.style.display = v.reset ? "inline": "none"
 }
 
 //Button Functions
@@ -104,6 +142,8 @@ export function handleStart(state: AppState): void {
 
         if (toSeconds(current_) <=0) {
             clearInterval(intervalID)
+            state.state = "done"
+            render(state)
         }
     } ,1000) // 1 second interval
 
@@ -148,6 +188,8 @@ export function handleResume(state: AppState): void {
 
         if (toSeconds(current_) <=0) {
             clearInterval(intervalID)
+            state.state = "done"
+            render(state)
         }
     } ,1000) // 1 second interval
 
@@ -186,4 +228,15 @@ startBtn.addEventListener("click", () => handleStart(state))
 pauseBtn.addEventListener("click", ()=> handlePause(state))
 resumeBtn.addEventListener("click", ()=> handleResume(state))
 resetBtn.addEventListener("click", ()=> handleReset(state))
+
+// Input Listeners
+minutesInput.addEventListener("input", ()=> {
+    state.remaining = { minutes: parseInt(minutesInput.value) || 0, seconds: parseInt(secondsInput.value) || 0}
+    render(state)
+})
+
+secondsInput.addEventListener("input", ()=> {
+    state.remaining = {minutes: parseInt(minutesInput.value) ||0, seconds: parseInt(secondsInput.value) || 0}
+    render(state)
+})
 // #endregion

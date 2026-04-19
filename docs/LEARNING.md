@@ -560,6 +560,66 @@ The return type changes from `: string` to `: void`. The internal logic stays th
 
 ---
 
+### 38. Ternary operator `? :`
+
+A compact if/else for simple expressions:
+
+```typescript
+v.start ? "inline" : "none"
+
+// same as:
+if (v.start) { "inline" } else { "none" }
+```
+
+Read as: "if `v.start` is true, use `"inline"`, otherwise use `"none"`". Common for assigning one of two values based on a condition.
+
+---
+
+### 39. Button visibility belongs in `render`, not in handlers
+
+Centralising button show/hide in `render` means handlers only update state — `render` reflects everything automatically:
+
+```typescript
+// ✅ handlers just update state
+state.state = "running"
+render(state)  // render handles buttons, display, status all at once
+
+// ❌ scattered — easy to miss a case
+handleStart → manually hide startBtn, show pauseBtn...
+handlePause → manually hide pauseBtn, show resumeBtn...
+```
+
+Use a lookup table keyed by state to avoid scattered if/else:
+
+```typescript
+const visibility = {
+    idle:    { start: true,  pause: false, resume: false, reset: false },
+    running: { start: false, pause: true,  resume: false, reset: true  },
+    paused:  { start: false, pause: false, resume: true,  reset: true  },
+    done:    { start: true,  pause: false, resume: false, reset: true  },
+}
+const v = visibility[state.state]
+startBtn.style.display = v.start ? "inline" : "none"
+```
+
+---
+
+### 40. Set `state.state = "done"` when countdown reaches zero
+
+The interval stopping alone doesn't update state — you must explicitly set it and re-render:
+
+```typescript
+if (toSeconds(current_) <= 0) {
+    clearInterval(intervalID)
+    state.state = "done"  // ← required, interval stop doesn't do this
+    render(state)         // ← update buttons and status
+}
+```
+
+Applies to both `handleStart` and `handleResume`.
+
+---
+
 ## Open Questions
 
 - Q: Why does `isValidDuration` combine two validations (00:00 check and seconds > 59) into one function instead of splitting them?
