@@ -1,7 +1,7 @@
 // 4 possible state of the timer
 type TimerState = "idle" | "running" | "paused" | "done" // this is called union, so it will only have these values instead
 
-
+// #region INTERFACES
 // Represents the poin in time (the minute and seconds)
 interface TimerDuration { // using interface so it'll be object shapes
     "minutes": number, // 0 - 99
@@ -16,12 +16,9 @@ export interface AppState {
     remaining: TimerDuration, // remaining time
     intervalId: number | null    // set interval, null if nothing created. number => timer is running, ID stored here, null => when it's not running (idle, paused, done), no interval
 }
+// #endregion
 
-
-
-
-
-//FUNCTIONS
+// #region FUNCTIONS
 // Convert TimerDuration -> total seconds
 export function toSeconds(duration: TimerDuration): number {
     return (duration.minutes * 60) + duration.seconds
@@ -134,8 +131,6 @@ export function handleResume(state: AppState): void {
 
 }
 
-
-
 export function handleReset(state: AppState): void {
     // steps:
     // - read the current
@@ -149,4 +144,24 @@ export function handleReset(state: AppState): void {
 
 }
 
+// #endregion FUNCTIONS
 
+// #region DOM
+// Input
+const minutesInput = document.getElementById("minutes-input") as HTMLInputElement
+const secondsInput = document.getElementById("seconds-input") as HTMLInputElement
+
+// Display
+const timerDisplay = document.getElementById("timer-display") as HTMLElement
+
+// Button
+const startBtn = document.getElementById("start-btn") as HTMLButtonElement
+const pauseBtn = document.getElementById("pause-btn") as HTMLButtonElement 
+const resumeBtn = document.getElementById("resume-btn") as HTMLButtonElement
+const resetBtn = document.getElementById("reset-btn") as HTMLButtonElement
+
+// Status Message
+const statusMsg = document.getElementById("status-msg") as HTMLElement
+
+
+// #endregion
