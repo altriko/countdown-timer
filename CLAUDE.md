@@ -12,3 +12,4 @@ The PRD is based on the docs/PRD.md
 # Setup
 - Please help create the guide using the docs/TECHSPEC.md
 - Record all the question and learning point in to be remarked in the docs/LEARNING.md at the end of each phase based on the TECHSPEC.md
+- After getting done on the checker, please put the record again on the docs/LEARNING.md

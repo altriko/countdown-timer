@@ -352,6 +352,57 @@ To run tests, swap `index.html` to load `timer.test.js` instead of `timer.js`, t
 
 ---
 
+### 25. `setInterval` returns a number ID — save it onto state
+
+`setInterval` automatically returns a number when called — the browser assigns it. You don't create the number yourself.
+
+```typescript
+const intervalID = setInterval(() => { ... }, 1000)  // browser returns e.g. 42
+state.intervalId = intervalID  // save it so other functions can reach it
+```
+
+Without saving to `state`, other functions like `handlePause` can't access it — they only see `null` and `clearInterval(null)` does nothing.
+
+---
+
+### 26. Why set `state.intervalId = null` after `clearInterval`
+
+After `clearInterval`, the interval is dead and the ID is useless. Setting it to `null` signals "no interval is currently running" — matching the `AppState` contract where `null` means not running.
+
+Two practical reasons:
+- Prevents accidental double-pause (second call does `clearInterval(null)` — harmless)
+- Keeps state honest — a stale ID would lie about the app's current state
+
+---
+
+### 27. Avoid unnecessary intermediate variables
+
+If a variable is only used once immediately, remove it and use the value directly:
+
+```typescript
+// ❌ unnecessary — currentInterval_ used only once
+let currentInterval_ = state.intervalId
+clearInterval(currentInterval_)
+
+// ✅ simpler
+clearInterval(state.intervalId)
+```
+
+---
+
+### 28. `export` on interfaces and types
+
+To use a type from another file, it must also be exported:
+
+```typescript
+export interface AppState { ... }   // now importable in timer.test.ts
+export type TimerState = ...
+```
+
+Without `export`, the type only exists inside that file.
+
+---
+
 ## Open Questions
 
 - Q: Why does `isValidDuration` combine two validations (00:00 check and seconds > 59) into one function instead of splitting them?

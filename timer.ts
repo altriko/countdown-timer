@@ -10,7 +10,7 @@ interface TimerDuration { // using interface so it'll be object shapes
 
 
 // Source of truth of the full application state (based on the interface)
-interface AppState {
+export interface AppState {
     state: TimerState,
     initialDuration: TimerDuration, // initial time originally
     remaining: TimerDuration, // remaining time
@@ -74,10 +74,11 @@ export function handleStart(state: AppState): void {
     // - read current timer display
     // - run the loop for the tick (with interval 1 second)
     // - return the current after the tick (no need, as long as it reads the current_)
-    let current_ = state.remaining
+    let current_ = state.initialDuration
     
     const intervalID = setInterval(() => {
         current_ = tick(current_)
+        state.remaining = current_
         console.log(current_)
 
         if (toSeconds(current_) <=0) {
@@ -102,15 +103,41 @@ export function handlePause(state: AppState): void {
     // steps:
     // - read the current intervalID
     // - pause the loop (clearInterval)
-    let currentInterval_ = state.intervalId
-    clearInterval(currentInterval_)
+    clearInterval(state.intervalId)
+    state.intervalId = null
     state.state = "paused"
 
 }
 
 
 
-// function handleResume(): void
+export function handleResume(state: AppState): void {
+    // steps:
+    // - read the current intervalID
+    // - resume based on the start button
+    // - update the state
+    let current_ = state.remaining
+    
+    const intervalID = setInterval(() => {
+        current_ = tick(current_)
+        console.log(current_)
+
+        if (toSeconds(current_) <=0) {
+            clearInterval(intervalID)
+        }
+    } ,1000) // 1 second interval
+
+    state.intervalId = intervalID
+    state.state = "running"
+    
+
+}
+
+
+
+
+
+
 // function handleReset(): void 
 
 

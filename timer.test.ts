@@ -1,4 +1,5 @@
 import * as Timer from "./timer.js" 
+// import AppState from "./timer.js"
 
 // TEST CASEs
 // Initial Function
@@ -19,8 +20,8 @@ import * as Timer from "./timer.js"
 //
 const testState: AppState = {
     state: "running",
-    initialDuration:  {"minutes": 1, "seconds": 12},
-    remaining: {"minutes": 1, "seconds": 12}, // remaining time
+    initialDuration:  {"minutes": 2, "seconds": 12},
+    remaining: {"minutes": 2, "seconds": 12}, // remaining time
     intervalId: null
 }
 
@@ -32,7 +33,11 @@ console.log(testState.state)
 
 setTimeout(() => {
     Timer.handlePause(testState)
-    console.log("paused — no more ticks should appear")
+    console.log("paused for 2 sec")
     console.log(testState.state)
-}, 3000)
 
+    setTimeout(() => {
+        Timer.handleResume(testState)
+        console.log("resumed")
+    }, 2000)
+}, 3000)
