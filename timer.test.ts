@@ -28,16 +28,26 @@ const testState: AppState = {
 
 console.log("Start Timer: ")
 Timer.handleStart(testState)
-console.log(testState.state)
+console.log(Timer.render(testState))
+
+
 
 
 setTimeout(() => {
     Timer.handlePause(testState)
     console.log("paused for 2 sec")
-    console.log(testState.state)
+    console.log(Timer.render(testState))
 
     setTimeout(() => {
         Timer.handleResume(testState)
         console.log("resumed")
+        console.log(Timer.render(testState))
+
+        setTimeout(() => {
+            Timer.handleReset(testState)
+            console.log("reset")
+            console.log(Timer.render(testState))
+        }, 5000)
+
     }, 2000)
 }, 3000)

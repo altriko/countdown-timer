@@ -116,10 +116,11 @@ export function handleResume(state: AppState): void {
     // - read the current intervalID
     // - resume based on the start button
     // - update the state
-    let current_ = state.remaining
+    let current_ = state.remaining // the only difference with the handleStart
     
     const intervalID = setInterval(() => {
         current_ = tick(current_)
+        state.remaining = current_ // to record everytime it moves
         console.log(current_)
 
         if (toSeconds(current_) <=0) {
@@ -135,9 +136,17 @@ export function handleResume(state: AppState): void {
 
 
 
+export function handleReset(state: AppState): void {
+    // steps:
+    // - read the current
+    // - set the intervalID = null
+    // - set the remaining = 0
 
+    clearInterval(state.intervalId)
+    state.intervalId = null
+    state.remaining = state.initialDuration
+    state.state = "idle"
 
-
-// function handleReset(): void 
+}
 
 

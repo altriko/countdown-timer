@@ -403,6 +403,98 @@ Without `export`, the type only exists inside that file.
 
 ---
 
+### 29. Two intervals running = doubled logs
+
+If you call `handleStart` and `handleResume` back-to-back without pausing in between, two `setInterval` instances run simultaneously — causing every tick to log twice.
+
+```typescript
+// ❌ both run at the same time
+Timer.handleStart(testState)
+Timer.handleResume(testState)  // starts a second interval immediately
+```
+
+Fix: only call `handleResume` after `handlePause` has stopped the first interval:
+
+```typescript
+// ✅ nested setTimeout ensures correct sequence
+setTimeout(() => {
+    Timer.handlePause(testState)
+
+    setTimeout(() => {
+        Timer.handleResume(testState)  // only runs after pause
+    }, 2000)
+}, 3000)
+```
+
+**Rule:** never call `handleStart` or `handleResume` without first ensuring the previous interval is cleared — otherwise intervals stack up.
+
+---
+
+### 30. `remaining` should equal `initialDuration` on creation
+
+When first creating state, `remaining` should be the same value as `initialDuration` — nothing has counted down yet.
+
+```typescript
+const testState = {
+    state: "idle",
+    initialDuration: {"minutes": 2, "seconds": 12},
+    remaining: {"minutes": 2, "seconds": 12},  // same — full time remaining
+    intervalId: null
+}
+```
+
+- `initialDuration` — never changes, used as reference for reset
+- `remaining` — counts down each tick, updated by `handleStart`
+
+---
+
+### 31. Unnecessary intermediate variables
+
+If a variable is assigned only to immediately assign something else, remove it:
+
+```typescript
+// ❌ initial_ adds no value
+const initial_ = state.initialDuration
+let current_ = initial_
+
+// ✅ simpler
+let current_ = state.initialDuration
+```
+
+Use `let` (not `const`) when the variable will be reassigned, e.g. `current_ = tick(current_)`.
+
+---
+
+### 32. `handleResume` must also update `state.remaining` each tick
+
+Both `handleStart` and `handleResume` need `state.remaining = current_` inside the interval — otherwise a second pause has no idea where to resume from:
+
+```typescript
+const intervalID = setInterval(() => {
+    current_ = tick(current_)
+    state.remaining = current_  // ← required in both handleStart and handleResume
+    ...
+}, 1000)
+```
+
+---
+
+### 33. `handleReset` should restore `remaining` to `initialDuration`, not `{0,0}`
+
+Resetting to zero means the timer can never be restarted — there's nothing left to count down:
+
+```typescript
+// ❌ resets to zero — unusable after reset
+state.remaining = {"minutes": 0, "seconds": 0}
+
+// ✅ restores full duration — ready to start again
+state.remaining = state.initialDuration
+```
+
+`initialDuration` exists precisely for this: a fixed reference that never changes, so reset always has a target to return to.
+
+---
+
 ## Open Questions
 
 - Q: Why does `isValidDuration` combine two validations (00:00 check and seconds > 59) into one function instead of splitting them?
