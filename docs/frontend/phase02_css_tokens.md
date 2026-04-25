@@ -6,6 +6,39 @@
 
 ## Topics
 
+### `:root` vs everything else
+
+`:root` is the master token definition — store values there, not apply them. All other selectors use those values via `var()`.
+
+```css
+:root { --bg: oklch(10% 0.012 240); }  /* define */
+body  { background: var(--bg); }       /* use */
+```
+
+- `--name` → how you define it (inside `:root`)
+- `var(--name)` → how you use it (everywhere else)
+
+Like a TypeScript `const`: `:root` declares it, `var()` reads it.
+
+---
+
+### CSS file order
+
+```css
+@import url('...')          /* 1. Fonts — must be absolute first line */
+*, *::before, *::after { } /* 2. Reset */
+:root { }                   /* 3. Tokens — before any var() usage */
+body { }                    /* 4. Base/global styles */
+#id, .class { }            /* 5. Component styles */
+[data-state] { }           /* 6. State styles */
+@keyframes { }             /* 7. Animations */
+@media { }                 /* 8. Media queries — always last */
+```
+
+Rule: define before use. `:root` tokens before `var()`, `@import` before everything.
+
+---
+
 ### How CSS connects to HTML
 
 CSS (Cascading Style Sheets) is a separate language from HTML. It selects elements and applies rules to them.
@@ -58,6 +91,40 @@ body {
 `:root` is the top of the HTML tree — variables defined here are available to every element on the page.
 
 Why this matters for the timer: the accent color changes per state (green → amber → coral). Without tokens you'd have to update that color in 5 different places. With tokens, you change one value.
+
+---
+
+### Can you mix hex and oklch?
+
+Yes — CSS accepts any colour format anywhere. Common real-world pattern:
+
+```css
+:root {
+    --brand-primary: #FF6B35;          /* locked brand hex — don't touch */
+    --bg:            oklch(10% 0.012 240);  /* your design system */
+}
+```
+
+Brand colours come from the client as hex and stay hex. Your own design system tokens use oklch for flexibility. No conversion needed — store each in whatever format it came from.
+
+---
+
+### Hex vs `oklch`
+
+Hex (`#1a1a2e`) is RGB shorthand — three pairs for Red, Green, Blue. You can't read it and know if it's light, dark, warm, or cool without a colour picker.
+
+`oklch(L% C H)` is human-readable — you reason about the colour directly: `10%` = very dark, `0.012` = nearly grey, `240` = blue hue.
+
+Key advantage for this project: all three state colours share `72% 0.18`, only hue differs:
+```css
+--accent:       oklch(72% 0.18 158);  /* mint */
+--accent-pause: oklch(72% 0.18 65);   /* amber */
+--accent-done:  oklch(72% 0.18 18);   /* coral */
+```
+
+In hex you can't guarantee the same perceived brightness across hues — the eye sees green as brighter than red at identical RGB values. oklch's `L` is perceptually uniform, so `72%` is actually the same brightness everywhere.
+
+Trade-off: hex works in every browser ever made. oklch needs Chrome 111+, Firefox 113+, Safari 15.4+. Fine for a modern project; not for legacy support.
 
 ---
 

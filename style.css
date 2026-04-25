@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+:root {
+    --bg:           oklch(10% 0.012 240);  /* page background */
+    --surface:      oklch(14% 0.015 240);  /* button/card surface */
+    --border:       oklch(22% 0.018 240);  /* subtle borders */
+    --text:         oklch(92% 0.008 240);  /* primary text / white */
+    --muted:        oklch(50% 0.012 240);  /* secondary text */
+    --ring-track:   oklch(20% 0.015 240);  /* ring background track */
+    --accent:       oklch(72% 0.18 158); /* ring - mint*/
+    --accent-pause: oklch(72% 0.18 65); /* ring - amber*/
+    --accent-done:  oklch(72% 0.18 18); /* ring - coral*/
+    --accent-idle:  oklch(50% 0.012 240); /* ring - grey*/  
+
+}
+
+
+body {
+    background: var(--bg);
+}
+header p {
+    font-family: "DM Sans", sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+#status-msg {
+    font-family: "DM Sans", sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color:var(--muted);
+}
+
+#timer-display {
+    font-family: "Space Mono", monospace;
+    font-size: 80px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--text);
+}
+
+.input-group input{
+    font-family: "Space Mono", monospace;
+    font-size: 80px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--text);
+    text-align: center;
+    background: transparent;
+    border: none;
+}
+
+button{
+    font-family: "DM Sans", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+}
