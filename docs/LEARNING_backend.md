@@ -620,6 +620,23 @@ Applies to both `handleStart` and `handleResume`.
 
 ---
 
+### 41. `render(state)` must be called once on page load
+
+`render()` is wired to user events (clicks, input changes) — but not to page load. Without an explicit init call, the browser displays all HTML elements as written, with no hiding applied.
+
+Fix: call `render(state)` once at the very bottom of the wiring section, after all event listeners:
+
+```typescript
+startBtn.addEventListener("click", () => handleStart(state))
+// ... other listeners ...
+
+render(state)  // applies idle state on load — hides resume, pause, reset
+```
+
+**Rule:** if a function controls what the user sees, it must run on load — not just on interaction.
+
+---
+
 ## Open Questions
 
 - Q: Why does `isValidDuration` combine two validations (00:00 check and seconds > 59) into one function instead of splitting them?

@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap');
 
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 :root {
     --bg:           oklch(10% 0.012 240);  /* page background */
     --surface:      oklch(14% 0.015 240);  /* button/card surface */
@@ -70,13 +74,41 @@ header p {
 }
 
 button{
+    all: unset; /* removes all browser default button setup*/
+    height: 48px;
+    border-radius: 100px;
     font-family: "DM Sans", sans-serif;
     font-size: 14px;
     font-weight: 500;
+    cursor: pointer; /* make the hand button on the cursor */
+    box-sizing: border-box; 
 }
+
+button:hover{
+    opacity: 0.85;
+}
+
+button:disabled{
+    opacity:0.4;
+    cursor:not-allowed;
+}
+
 
 .button-group {
     display: flex;
     gap: 12px;
     justify-content: center;
+}
+
+.btn-icon {
+    width: 48px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+.btn-primary {
+    padding: 0 28px;
+    background: var(--text);
+    color: var(--bg);
 }
