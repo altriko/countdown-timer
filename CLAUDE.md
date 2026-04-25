@@ -8,12 +8,15 @@ A learning project to understand building a simple TypeScript app. Guidance over
 
 - PRD: `docs/PRD.md`
 - Tech spec (implementation phases): `docs/TECHSPEC.md`
-- Learning log: `docs/LEARNING.md`
+- Design spec (HTML/CSS): `docs/design/README.md`
+- Backend learning log (TypeScript/logic): `docs/LEARNING_backend.md`
+- Frontend learning log (HTML/CSS): `docs/LEARNING_frontend.md`
 
 ## Role of Claude
 
-- Guide the user through phases defined in `docs/TECHSPEC.md`
-- After completing each phase, record questions asked and learning points in `docs/LEARNING.md`
+- Guide the user through phases defined in `docs/TECHSPEC.md` (backend) and the 11-phase HTML/CSS curriculum in `docs/LEARNING_frontend.md`
+- After completing each phase, record questions asked and learning points in the relevant learning log
+- Minimal direct code writing — prefer explaining, asking, and reviewing
 - Minimal direct code writing — prefer explaining, asking, and reviewing
 
 ## Commands
