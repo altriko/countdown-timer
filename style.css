@@ -14,10 +14,23 @@
 
 }
 
-
 body {
-    background: var(--bg);
+    background: var(--bg); 
+    display: flex; /* centers <main> on the page */
+    min-height: 100vh;  /* vh = viewport height*/
+    justify-content: center;
+    align-items: center;
+    margin: 0;
 }
+
+main {
+    display: flex; /* stacks header, ring, controls vertically */
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+}
+
+
 header p {
     font-family: "DM Sans", sans-serif;
     font-size: 11px;
@@ -60,4 +73,10 @@ button{
     font-family: "DM Sans", sans-serif;
     font-size: 14px;
     font-weight: 500;
+}
+
+.button-group {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
 }
