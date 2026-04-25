@@ -2,16 +2,33 @@
 <html>
     <head>
         <title>Countdown Timer</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
+        <main>
+            <header>
+                <p>COUNTDOWN</p>
+            </header>    
+            <section id="ring">
+                <div class="input-group">
+                    <input id ="minutes-input" type="number" min="0" max="99">
+                    <span>:</span>
+                    <input id ="seconds-input" type="number" min="0" max="59">
+                </div>
+                <div id ="timer-display">0:00</div>
+            </section>
+            <section id="controls">
+                <div class="button-group">
+                    <button id ="start-btn">Start</button>
+                    <button id ="pause-btn">Pause</button>
+                    <button id ="resume-btn">Resume</button>
+                    <button id ="reset-btn">Reset</button>
+                </div>
+                <p id ="status-msg">Idle</p>
+            </section>
+        </main>
         <script type="module" src="timer.js"></script>
-        <input id ="minutes-input" type="number" min="0" max="99">
-        <input id ="seconds-input" type="number" min="0" max="59">
-        <div id ="timer-display">0:00</div>
-        <button id ="start-btn">Start</button>
-        <button id ="pause-btn">Pause</button>
-        <button id ="resume-btn">Resume</button>
-        <button id ="reset-btn">Reset</button>
-        <p id ="status-msg">Idle</p>
     </body>
 </html>

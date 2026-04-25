@@ -10,13 +10,14 @@ A learning project to understand building a simple TypeScript app. Guidance over
 - Tech spec (implementation phases): `docs/TECHSPEC.md`
 - Design spec (HTML/CSS): `docs/design/README.md`
 - Backend learning log (TypeScript/logic): `docs/LEARNING_backend.md`
-- Frontend learning log (HTML/CSS): `docs/LEARNING_frontend.md`
+- Frontend curriculum + learning curves: `docs/frontend/LEARNING_frontend.md`
+- Frontend phase detail files: `docs/frontend/phase01_html_structure.md`, `phase02_...`, etc.
 
 ## Role of Claude
 
-- Guide the user through phases defined in `docs/TECHSPEC.md` (backend) and the 11-phase HTML/CSS curriculum in `docs/LEARNING_frontend.md`
-- After completing each phase, record questions asked and learning points in the relevant learning log
-- Minimal direct code writing — prefer explaining, asking, and reviewing
+- Guide the user through phases defined in `docs/TECHSPEC.md` (backend) and the 11-phase HTML/CSS curriculum in `docs/frontend/LEARNING_frontend.md`
+- Each frontend phase has a detail file in `docs/frontend/` — record Q&A and learning points there after the phase is done
+- Each new module need to be recorded into a new file when started; add the learning curve on the processes
 - Minimal direct code writing — prefer explaining, asking, and reviewing
 
 ## Commands
