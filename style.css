@@ -43,6 +43,41 @@ header p {
     text-transform: uppercase;
     color: var(--muted);
 }
+
+#ring{
+    position: relative;
+    width: 400px;
+    height: 400px;
+}
+
+#ring-svg {
+    /* move from 3 oclock -> 12 oclock */
+    transform: rotate(-90deg); 
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+}
+
+.ring-center {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+
+}
+
+#ring-track{stroke: var(--ring-track);}
+
+#ring-glow{stroke: var(--accent); filter:blur(4px);}
+
+#ring-progress{stroke: var(--accent)}
+
+
+
 #status-msg {
     font-family: "DM Sans", sans-serif;
     font-size: 11px;

@@ -137,4 +137,16 @@ This is cleaner than absolute positioning when all you want is overlap + centeri
 
 ## Questions & Learning Points
 
-*(Recorded after the task is completed and reviewed)*
+**Q: Why does the parent use `position: relative` instead of `position: absolute`?**
+A: `relative` keeps the element in normal document flow (it still takes up its 400×400 space), while also acting as an anchor for absolute children. Using `absolute` on the parent would rip it out of the layout and cause it to anchor to *its* own nearest relative ancestor instead.
+
+**Q: What does `inset: 0` do?**
+A: Shorthand for `top: 0; right: 0; bottom: 0; left: 0` — pins all four edges to the parent, making the element fill it completely.
+
+**Q: Why does `#ring-svg` need `pointer-events: none`?**
+A: Without it the SVG sits on top of the inputs and blocks clicks — the user can't interact with the form fields underneath.
+
+**Key structure:**
+- `#ring` → `position: relative` — the anchor, fixed 400×400px
+- `#ring-svg` → `position: absolute; inset: 0` — fills the container behind content
+- `.ring-center` → `position: absolute; inset: 0; margin: auto; z-index: 1` — centered on top of the SVG

@@ -170,4 +170,20 @@ Check in the browser — you should see a grey track ring and a green progress r
 
 ## Questions & Learning Points
 
-*(Recorded after the task is completed and reviewed)*
+**Q: What does `stroke-dasharray: 1162.4` mean and why that number?**
+A: It sets one dash equal to the full circumference of the circle, making it look like a solid ring. 1162.4 = 2 × π × 185 (the radius).
+
+**Q: What does `stroke-dashoffset` control?**
+A: How far the dash is shifted along the stroke. Offset 0 = full ring drawn. Offset = circumference = nothing drawn.
+
+**Q: How do you calculate the offset for 50% remaining?**
+A: `offset = circumference × (1 − fraction_remaining)` → `1162.4 × 0.5 = 581.2`. We subtract from 1 because the offset represents how much has been *used*, not how much is *left*.
+
+**Q: Why does the SVG need to be inside `<section id="ring">`?**
+A: Phase 7 uses `position: absolute` to overlay the SVG on top of the section content. A child can only be positioned relative to its parent container — if the SVG is outside the section, it can't be anchored to it.
+
+**Mistakes caught during review:**
+- `heights` typo in SVG attribute (should be `height`)
+- `filter: blur(4px)` was on `#ring-progress` instead of `#ring-glow`
+- Missing semicolon in CSS: `stroke: var(--accent) filter:blur(4px)` — broke both declarations
+- SVG was placed outside `<section id="ring">` instead of inside it
