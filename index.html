@@ -10,23 +10,50 @@
         <main>
             <header>
                 <p>COUNTDOWN</p>
-            </header>    
+            </header> 
             <section id="ring">
-                <div class="input-group">
-                    <input id ="minutes-input" type="number" min="0" max="99">
-                    <span>:</span>
-                    <input id ="seconds-input" type="number" min="0" max="59">
-                </div>
-                <div id ="timer-display">0:00</div>
+                <svg id="ring-svg" width="400" height="400" viewBox="0 0 400 400">
+                    <!-- for background -->
+                    <circle id="ring-track"
+                        cx="200" cy="200" r="185"
+                        fill="none"
+                        stroke-width="5"
+                    />
+                    <!-- for foreground -->
+                    <circle id="ring-glow"
+                        cx="200" cy="200" r="185"
+                        fill="none"
+                        stroke-width="2.5"
+                        opacity="0.3"
+                    /> 
+                    <!-- animation ring  -->
+                     <circle id="ring-progress"
+                        cx="200" cy="200" r="185"
+                        fill="none"
+                        stroke-width="5"
+                        stroke-linecap="round"
+                        stroke-dasharray="1162.4"
+                        stroke-dashoffset="0"
+                     />
+                </svg>
+                <div class = "ring-center">
+                    <div class="input-group">
+                        <input id ="minutes-input" type="number" min="0" max="99">
+                        <span>:</span>
+                        <input id ="seconds-input" type="number" min="0" max="59">
+                    </div>
+                    <div id ="timer-display">0:00</div>
+                    <p id ="status-msg">Idle</p>
+
+            </div>
             </section>
             <section id="controls">
                 <div class="button-group">
-                    <button id ="start-btn">Start</button>
-                    <button id ="pause-btn">Pause</button>
-                    <button id ="resume-btn">Resume</button>
-                    <button id ="reset-btn">Reset</button>
+                        <button class="btn-primary" id ="start-btn">Start</button>
+                        <button class="btn-primary" id ="resume-btn">Resume</button>
+                        <button class="btn-icon" id ="pause-btn">Pause</button>
+                        <button class="btn-icon" id ="reset-btn">Reset</button>
                 </div>
-                <p id ="status-msg">Idle</p>
             </section>
         </main>
         <script type="module" src="timer.js"></script>

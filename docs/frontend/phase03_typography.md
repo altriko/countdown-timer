@@ -104,4 +104,22 @@ For the minute/second inputs: `2.2ch` means "wide enough for two digits, with a 
 
 ## Questions & Learning Points
 
-*(Recorded after the task is completed and reviewed)*
+### Q: Why use `.input-group input` instead of just `.input-group` or `input`?
+
+- `.input-group` targets the `<div>` wrapper itself — not the inputs inside it
+- `input` targets every input on the page — too broad, would catch unrelated inputs added later
+- `.input-group input` means "inputs that are descendants of `.input-group`" — precise and scoped
+
+The space between two parts of a selector means "a descendant of."
+
+---
+
+### Q: Why can I use Comic Sans MS without importing it from Google Fonts?
+
+Comic Sans MS is a system font — pre-installed on the OS. The browser checks system fonts first; if found, no network request is needed.
+
+Two font sources:
+- **System fonts** — pre-installed, always available (Arial, Georgia, Comic Sans MS)
+- **Web fonts** — hosted externally, must be loaded via `@import` (DM Sans, Space Mono)
+
+This is also why `font-family` has fallbacks: `'DM Sans', sans-serif` — if the web font fails to load, use the system sans-serif instead.

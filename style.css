@@ -1,0 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+:root {
+    --bg:           oklch(10% 0.012 240);  /* page background */
+    --surface:      oklch(14% 0.015 240);  /* button/card surface */
+    --border:       oklch(22% 0.018 240);  /* subtle borders */
+    --text:         oklch(92% 0.008 240);  /* primary text / white */
+    --muted:        oklch(50% 0.012 240);  /* secondary text */
+    --ring-track:   oklch(20% 0.015 240);  /* ring background track */
+    --accent:       oklch(72% 0.18 158); /* ring - mint*/
+    --accent-pause: oklch(72% 0.18 65); /* ring - amber*/
+    --accent-done:  oklch(72% 0.18 18); /* ring - coral*/
+    --accent-idle:  oklch(50% 0.012 240); /* ring - grey*/  
+
+}
+
+body {
+    background: var(--bg); 
+    display: flex; /* centers <main> on the page */
+    min-height: 100vh;  /* vh = viewport height*/
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+main {
+    display: flex; /* stacks header, ring, controls vertically */
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+}
+
+
+header p {
+    font-family: "DM Sans", sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+#ring{
+    position: relative;
+    width: 400px;
+    height: 400px;
+}
+
+#ring-svg {
+    /* move from 3 oclock -> 12 oclock */
+    transform: rotate(-90deg); 
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+}
+
+.ring-center {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+
+}
+
+#ring-track{stroke: var(--ring-track);}
+
+#ring-glow{stroke: var(--accent); filter:blur(4px);}
+
+#ring-progress{stroke: var(--accent)}
+
+
+
+#status-msg {
+    font-family: "DM Sans", sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color:var(--muted);
+}
+
+#timer-display {
+    font-family: "Space Mono", monospace;
+    font-size: 80px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--text);
+}
+
+.input-group input{
+    font-family: "Space Mono", monospace;
+    font-size: 80px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--text);
+    text-align: center;
+    background: transparent;
+    border: none;
+}
+
+button{
+    all: unset; /* removes all browser default button setup*/
+    height: 48px;
+    border-radius: 100px;
+    font-family: "DM Sans", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer; /* make the hand button on the cursor */
+    box-sizing: border-box; 
+}
+
+button:hover{
+    opacity: 0.85;
+}
+
+button:disabled{
+    opacity:0.4;
+    cursor:not-allowed;
+}
+
+
+.button-group {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.btn-icon {
+    width: 48px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+.btn-primary {
+    padding: 0 28px;
+    background: var(--text);
+    color: var(--bg);
+}

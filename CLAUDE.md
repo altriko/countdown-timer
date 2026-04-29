@@ -17,6 +17,7 @@ A learning project to understand building a simple TypeScript app. Guidance over
 
 - Guide the user through phases defined in `docs/TECHSPEC.md` (backend) and the 11-phase HTML/CSS curriculum in `docs/frontend/LEARNING_frontend.md`
 - Each frontend phase has a detail file in `docs/frontend/` — record Q&A and learning points there after the phase is done
+- Record backend Q&A on the docs/LEARNING_backend.md as well
 - Each new module need to be recorded into a new file when started; add the learning curve on the processes
 - Minimal direct code writing — prefer explaining, asking, and reviewing
 

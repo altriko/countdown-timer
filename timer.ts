@@ -95,7 +95,7 @@ export function render(state: AppState): void { // should change to :void on the
         running: {
             start: false,
             pause: true,
-            resume: true,
+            resume: false,
             reset: true
         },
         paused: {
@@ -240,3 +240,5 @@ secondsInput.addEventListener("input", ()=> {
     render(state)
 })
 // #endregion
+
+render(state)
